@@ -26,4 +26,4 @@ COPY . .
 # 1. --chdir /app: asegura que gunicorn encuentre app.py y las carpetas pages/core
 # 2. --bind 0.0.0.0:10000: fija el puerto para evitar el "Port scan timeout"
 # 3. --timeout 120: da más tiempo para cargar los datos pesados de los dashboards
-CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--chdir", "/app", "--timeout", "120", "app:server"]
+CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--chdir", "/app", "--timeout", "600", "--workers", "1", "app:server"]
