@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metanálisis Índices Pandémicos — LATAM-20</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Georgia,serif;background:#F8F9FA;color:#1A2332;padding:40px 20px}
+  .container{max-width:860px;margin:0 auto}
+  h1{color:#1E3A5F;font-size:22px;font-weight:700;letter-spacing:1px;margin-bottom:6px}
+  .subtitle{color:#6B7280;font-size:13px;margin-bottom:32px;line-height:1.6}
+  h2{color:#2C3E50;font-size:14px;font-weight:600;letter-spacing:2px;
+     text-transform:uppercase;margin-bottom:14px;padding-bottom:6px;
+     border-bottom:1px solid #D1D5DB}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px}
+  .card{background:white;border:1px solid #D1D5DB;border-radius:8px;
+        padding:18px 20px;text-decoration:none;display:block;
+        transition:box-shadow 0.2s,border-color 0.2s}
+  .card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08);border-color:#1E3A5F}
+  .card-num{font-size:11px;color:#9CA3AF;font-weight:600;letter-spacing:1px;
+            text-transform:uppercase;margin-bottom:4px}
+  .card-title{font-size:14px;font-weight:600;color:#1E3A5F;margin-bottom:6px}
+  .card-desc{font-size:12px;color:#6B7280;line-height:1.5}
+  .badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;
+         font-weight:600;margin-top:8px}
+  .badge-paper{background:#EBF4FF;color:#1E40AF}
+  .badge-h{background:#FEF3C7;color:#B7791F}
+  .badge-table{background:#DCFCE7;color:#166534}
+  .note{background:#F0F4F8;border-left:3px solid #1E3A5F;
+        padding:12px 16px;border-radius:4px;font-size:12px;
+        color:#4B5563;line-height:1.6;margin-bottom:24px}
+  .footer{text-align:center;font-size:11px;color:#9CA3AF;
+          margin-top:40px;padding-top:20px;border-top:1px solid #E5E7EB}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Metanálisis Índices Pandémicos — LATAM-20</h1>
+  <div class="subtitle">
+    Validez predictiva de GHS · SPAR · INFORM para el exceso de mortalidad COVID-19<br>
+    Investigadora: Gisselle Rey · Protocolo pre-registrado en OSF · Abril 2026
+  </div>
+
+  <div class="note">
+    ℹ️ Cada figura es interactiva: puede hacer zoom, desplazarse, pasar el cursor sobre los puntos 
+    para ver valores exactos, y descargar como imagen SVG desde el menú de la figura. 
+    No requiere instalación — funciona directamente en el navegador.
+  </div>
+
+  <h2>Figuras del paper</h2>
+  <div class="grid">
+    <a class="card" href="figuras_html/figura1_heatmap_correlaciones.html" target="_blank">
+      <div class="card-num">Figura 1</div>
+      <div class="card-title">Heatmap de correlaciones</div>
+      <div class="card-desc">Spearman ρ: todos los predictores × todos los desenlaces. Corrección FDR Benjamini-Hochberg.</div>
+      <span class="badge badge-paper">Análisis A2</span>
+    </a>
+    <a class="card" href="figuras_html/figura2_scatter_predictores.html" target="_blank">
+      <div class="card-num">Figura 2</div>
+      <div class="card-title">Scatter plots — predictores vs P-score</div>
+      <div class="card-desc">GHS · SPAR · INFORM · WGI Corrupción vs exceso mortalidad 2020. Estratificado por Tier CRVS.</div>
+      <span class="badge badge-paper">Análisis A4</span>
+    </a>
+    <a class="card" href="figuras_html/figura3_h2_mahajan.html" target="_blank">
+      <div class="card-num">Figura 3</div>
+      <div class="card-title">Test H2 — Hipótesis Mahajan</div>
+      <div class="card-desc">¿El cumplimiento RSI predice menos mortalidad que la capacidad real del sistema de salud? Test Fisher z.</div>
+      <span class="badge badge-h">Hipótesis H2</span>
+    </a>
+    <a class="card" href="figuras_html/figura4_h3_sesgo_spar.html" target="_blank">
+      <div class="card-num">Figura 4</div>
+      <div class="card-title">H3 — Sesgo de autorreporte SPAR</div>
+      <div class="card-desc">Correlación SPAR × WGI Control de Corrupción. ¿Los países con menor gobernanza inflan sus scores?</div>
+      <span class="badge badge-h">Hipótesis H3</span>
+    </a>
+    <a class="card" href="figuras_html/figura5_h4_moderacion_gini.html" target="_blank">
+      <div class="card-num">Figura 5</div>
+      <div class="card-title">H4 — Moderación por GINI</div>
+      <div class="card-desc">Pendientes simples de la relación GHS-Pscore por tercil de desigualdad pre-pandemia.</div>
+      <span class="badge badge-h">Hipótesis H4</span>
+    </a>
+    <a class="card" href="figuras_html/figura6_ranking_comparativo.html" target="_blank">
+      <div class="card-num">Figura 6</div>
+      <div class="card-title">Ranking comparativo LATAM-20</div>
+      <div class="card-desc">GHS · SPAR · INFORM normalizados a escala 0-10 con score compuesto de preparación.</div>
+      <span class="badge badge-paper">Exploratoria</span>
+    </a>
+  </div>
+
+  <h2>Datos del estudio</h2>
+  <div class="grid">
+    <a class="card" href="figuras_html/tabla_maestra_interactiva.html" target="_blank">
+      <div class="card-num">Tabla 1</div>
+      <div class="card-title">Tabla maestra LATAM-20</div>
+      <div class="card-desc">20 países × 48 variables: predictores (GHS, SPAR, INFORM), desenlaces (P-score, OMS), moderadores (GINI, WGI) y clasificación Tier CRVS.</div>
+      <span class="badge badge-table">Exportable como CSV</span>
+    </a>
+  </div>
+
+  <div class="footer">
+    Generado con Python · Plotly · Dash · Paleta CDC/Harvard<br>
+    Protocolo OSF pre-registrado · STROBE 22 ítems
+  </div>
+</div>
+</body>
+</html>
