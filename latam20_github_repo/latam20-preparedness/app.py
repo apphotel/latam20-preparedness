@@ -5,14 +5,15 @@ import os
 import sys
 from pathlib import Path
 
-# --- 1. CONFIGURACIÓN DE RUTAS ---
-# Esto asegura que Python encuentre tus módulos 'core' y 'pages' en el servidor
+# --- 1. CONFIGURACIÓN DE RUTAS (REFORZADA) ---
+# Resolvemos la ruta absoluta para que Docker no se pierda
 ROOT = Path(__file__).resolve().parent
+sys.path.append(str(ROOT))
 sys.path.append(str(ROOT / 'core'))
 sys.path.append(str(ROOT / 'pages'))
 
 # --- 2. IMPORTACIÓN DE DASHBOARDS ---
-# Asegúrate de que los archivos .py en la carpeta 'pages' tengan una variable llamada 'layout'
+# Usamos un bloque try-except detallado para diagnosticar errores en Render
 try:
     import validez_predictiva_dashboard
     import ghs_dashboard
@@ -22,23 +23,25 @@ try:
     import severity_dashboard
     import synthesis_dashboard
 except ImportError as e:
-    print(f"Error importando módulos: {e}")
+    print(f"ERROR CRÍTICO: No se pudo importar un módulo. Detalle: {e}")
+    # Esto ayuda a ver en los logs de Render exactamente qué falta
+    raise e
 
 # --- 3. INICIALIZAR LA APP ---
 app = dash.Dash(
     __name__, 
     suppress_callback_exceptions=True,
-    # Puedes añadir un tema de bootstrap si lo deseas:
-    # external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css']
+    # Puedes descomentar la siguiente línea si usas Dash Bootstrap Components
+    # external_stylesheets=['https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css']
 )
 
-# ESTA LÍNEA ES VITAL PARA RENDER
+# ESTA LÍNEA ES VITAL PARA GUNICORN/RENDER
 server = app.server 
 
 # --- 4. DISEÑO (LAYOUT) ---
 app.layout = html.Div([
     html.H1("Metanálisis Índices Pandémicos — LATAM-20", 
-            style={'textAlign': 'center', 'padding': '20px', 'color': '#2c3e50'}),
+            style={'textAlign': 'center', 'padding': '20px', 'color': '#2c3e50', 'fontFamily': 'sans-serif'}),
     
     dcc.Tabs(id="tabs-menu", value='tab-validez', children=[
         dcc.Tab(label='Validez Predictiva', value='tab-validez'),
@@ -60,23 +63,31 @@ app.layout = html.Div([
     [Input('tabs-menu', 'value')]
 )
 def render_content(tab):
-    if tab == 'tab-validez':
-        return validez_predictiva_dashboard.layout
-    elif tab == 'tab-ghs':
-        return ghs_dashboard.layout
-    elif tab == 'tab-spar':
-        return spar_dashboard.layout
-    elif tab == 'tab-inform':
-        return inform_dashboard.layout
-    elif tab == 'tab-oxcgrt':
-        return oxcgrt_dashboard.layout
-    elif tab == 'tab-severity':
-        return severity_dashboard.layout
-    elif tab == 'tab-synthesis':
-        return synthesis_dashboard.layout
+    try:
+        if tab == 'tab-validez':
+            return validez_predictiva_dashboard.layout
+        elif tab == 'tab-ghs':
+            return ghs_dashboard.layout
+        elif tab == 'tab-spar':
+            return spar_dashboard.layout
+        elif tab == 'tab-inform':
+            return inform_dashboard.layout
+        elif tab == 'tab-oxcgrt':
+            return oxcgrt_dashboard.layout
+        elif tab == 'tab-severity':
+            return severity_dashboard.layout
+        elif tab == 'tab-synthesis':
+            return synthesis_dashboard.layout
+    except AttributeError as e:
+        return html.Div([
+            html.H3(f"Error en el layout de la pestaña: {tab}"),
+            html.P(str(e))
+        ], style={'color': 'red'})
+    
     return html.Div("Pestaña no encontrada")
 
 # --- 6. EJECUCIÓN ---
 if __name__ == '__main__':
+    # Render usa el puerto 10000 por defecto para servicios web
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port, debug=False)
