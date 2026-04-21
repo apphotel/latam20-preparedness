@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: latam20-preparedness
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.10"
+      - key: METANALISIS_DATA
+        value: /app/data
