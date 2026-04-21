@@ -78,6 +78,5 @@ def render_content(tab):
 
 # --- 6. EJECUCIÓN ---
 if __name__ == '__main__':
-    # Usamos el puerto de Render o el 8061 por defecto localmente
-    port = int(os.environ.get('PORT', 8061))
-    app.run(debug=False, host='0.0.0.0', port=port)
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port, debug=False)
