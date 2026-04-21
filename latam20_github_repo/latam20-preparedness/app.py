@@ -1,30 +1,45 @@
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
-import os, sys
+import os
+import sys
 from pathlib import Path
 
-# Configuración de rutas
+# --- 1. CONFIGURACIÓN DE RUTAS ---
+# Esto asegura que Python encuentre tus módulos 'core' y 'pages' en el servidor
 ROOT = Path(__file__).resolve().parent
-sys.path.insert(0, str(ROOT / 'core'))
-sys.path.insert(0, str(ROOT / 'pages'))
+sys.path.append(str(ROOT / 'core'))
+sys.path.append(str(ROOT / 'pages'))
 
-# Importar tus 7 dashboards (asegúrate que los nombres coincidan con tus archivos)
-import validez_predictiva_dashboard
-import ghs_dashboard
-import spar_dashboard
-import inform_dashboard
-import oxcgrt_dashboard
-import severity_dashboard
-import synthesis_dashboard
+# --- 2. IMPORTACIÓN DE DASHBOARDS ---
+# Asegúrate de que los archivos .py en la carpeta 'pages' tengan una variable llamada 'layout'
+try:
+    import validez_predictiva_dashboard
+    import ghs_dashboard
+    import spar_dashboard
+    import inform_dashboard
+    import oxcgrt_dashboard
+    import severity_dashboard
+    import synthesis_dashboard
+except ImportError as e:
+    print(f"Error importando módulos: {e}")
 
-# Inicializar la App de Dash
-app = dash.Dash(__name__, suppress_callback_exceptions=True)
-server = app.server # Para Render
+# --- 3. INICIALIZAR LA APP ---
+app = dash.Dash(
+    __name__, 
+    suppress_callback_exceptions=True,
+    # Puedes añadir un tema de bootstrap si lo deseas:
+    # external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css']
+)
 
-# Diseño con menú de pestañas
+# ESTA LÍNEA ES VITAL PARA RENDER
+server = app.server 
+
+# --- 4. DISEÑO (LAYOUT) ---
 app.layout = html.Div([
-    html.H1("Metanálisis Índices Pandémicos — LATAM-20", style={'textAlign': 'center'}),
+    html.H1("Metanálisis Índices Pandémicos — LATAM-20", 
+            style={'textAlign': 'center', 'padding': '20px', 'color': '#2c3e50'}),
+    
     dcc.Tabs(id="tabs-menu", value='tab-validez', children=[
         dcc.Tab(label='Validez Predictiva', value='tab-validez'),
         dcc.Tab(label='GHS Index', value='tab-ghs'),
@@ -34,20 +49,35 @@ app.layout = html.Div([
         dcc.Tab(label='Severity', value='tab-severity'),
         dcc.Tab(label='Síntesis', value='tab-synthesis'),
     ]),
-    html.Div(id='tabs-content')
+    
+    # Contenedor donde se cargará el contenido de cada pestaña
+    html.Div(id='tabs-content', style={'padding': '20px'})
 ])
 
-# Lógica para cambiar de dashboard
-@app.callback(Output('tabs-content', 'children'),
-              [Input('tabs-menu', 'value')])
+# --- 5. LÓGICA DE NAVEGACIÓN ---
+@app.callback(
+    Output('tabs-content', 'children'),
+    [Input('tabs-menu', 'value')]
+)
 def render_content(tab):
-    if tab == 'tab-validez': return validez_predictiva_dashboard.layout
-    elif tab == 'tab-ghs': return ghs_dashboard.layout
-    elif tab == 'tab-spar': return spar_dashboard.layout
-    elif tab == 'tab-inform': return inform_dashboard.layout
-    elif tab == 'tab-oxcgrt': return oxcgrt_dashboard.layout
-    elif tab == 'tab-severity': return severity_dashboard.layout
-    elif tab == 'tab-synthesis': return synthesis_dashboard.layout
+    if tab == 'tab-validez':
+        return validez_predictiva_dashboard.layout
+    elif tab == 'tab-ghs':
+        return ghs_dashboard.layout
+    elif tab == 'tab-spar':
+        return spar_dashboard.layout
+    elif tab == 'tab-inform':
+        return inform_dashboard.layout
+    elif tab == 'tab-oxcgrt':
+        return oxcgrt_dashboard.layout
+    elif tab == 'tab-severity':
+        return severity_dashboard.layout
+    elif tab == 'tab-synthesis':
+        return synthesis_dashboard.layout
+    return html.Div("Pestaña no encontrada")
 
+# --- 6. EJECUCIÓN ---
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 8061)))
+    # Usamos el puerto de Render o el 8061 por defecto localmente
+    port = int(os.environ.get('PORT', 8061))
+    app.run(debug=False, host='0.0.0.0', port=port)
