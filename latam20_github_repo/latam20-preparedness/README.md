@@ -1,7 +1,7 @@
 # Metanálisis Índices Pandémicos — LATAM-20
 
 **Validez predictiva de GHS · SPAR · INFORM Risk para el exceso de mortalidad COVID-19**  
-Investigadora: Gisselle Rey · Protocolo pre-registrado OSF · Abril 2026
+
 
 ---
 
@@ -110,8 +110,4 @@ fueron filtrados a los 20 países de LATAM antes del deploy, manteniendo
 | INFORM Trend (20 MB) | INFORM_latam20_trend.csv (0.6 MB) | 97% |
 
 ---
-
-## Citar
-
-> Rey G. (2026). *Predictive validity of pandemic preparedness indices for COVID-19  
-> excess mortality in Latin America*. Protocolo OSF: [enlace]. 
+. 
